@@ -11,13 +11,20 @@ import (
 	"golang.org/x/crypto/scrypt"
 )
 
+// Params defines the scrypt algorithm parameters.
 type Params struct {
-	N      int
-	R      int
-	P      int
+	// N is the CPU/memory cost parameter.
+	N int
+	// R is the block size parameter.
+	R int
+	// P is the parallelization parameter.
+	P int
+	// KeyLen is the length of the derived key.
 	KeyLen int
 }
 
+// DefaultParams returns the recommended default scrypt parameters.
+// N=16384, R=8, P=1, KeyLen=32
 var DefaultParams = Params{
 	N:      16384,
 	R:      8,
@@ -31,6 +38,8 @@ func randomBytes(len int) ([]byte, error) {
 	return buf, err
 }
 
+// Hash generates a scrypt hash of the password with the given parameters.
+// The hash format is $scrypt$n=<N>,r=<R>,p=<P>$<salt>$<key>.
 func Hash(password string, params Params) (string, error) {
 	salt, err := randomBytes(8)
 	if err != nil {
@@ -100,6 +109,8 @@ func parseHashed(hashed string) (key, salt []byte, params Params, err error) {
 	return
 }
 
+// Verify checks if the password matches the hashed value.
+// It uses constant-time comparison to prevent timing attacks.
 func Verify(password, hashed string) (bool, error) {
 	key, salt, params, err := parseHashed(hashed)
 	if err != nil {
