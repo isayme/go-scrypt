@@ -109,6 +109,15 @@ func TestParseHashed(t *testing.T) {
 					KeyLen: 32,
 				},
 			},
+			{
+				hashed: "$scrypt$N=16385,R=9,P=2$WAQ74Fsr6DjVztxcFc0Kjw==$tVLlmbQ8lYtI6/VHPccl39BGaj4asiqB6W+KEK+s0DE=",
+				params: Params{
+					N:      16385,
+					R:      9,
+					P:      2,
+					KeyLen: 32,
+				},
+			},
 		}
 
 		for _, tc := range testCases {

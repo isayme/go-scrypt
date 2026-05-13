@@ -19,6 +19,10 @@ type Params struct {
 	R int
 	// P is the parallelization parameter.
 	P int
+
+	// SaltLen is the length of the salt.
+	SaltLen int
+
 	// KeyLen is the length of the derived key.
 	KeyLen int
 }
@@ -26,10 +30,11 @@ type Params struct {
 // DefaultParams returns the recommended default scrypt parameters.
 // N=16384, R=8, P=1, KeyLen=32
 var DefaultParams = Params{
-	N:      16384,
-	R:      8,
-	P:      1,
-	KeyLen: 32,
+	N:       16384,
+	R:       8,
+	P:       1,
+	SaltLen: 8,
+	KeyLen:  32,
 }
 
 func randomBytes(len int) ([]byte, error) {
@@ -41,7 +46,7 @@ func randomBytes(len int) ([]byte, error) {
 // Hash generates a scrypt hash of the password with the given parameters.
 // The hash format is $scrypt$n=<N>,r=<R>,p=<P>$<salt>$<key>.
 func Hash(password string, params Params) (string, error) {
-	salt, err := randomBytes(8)
+	salt, err := randomBytes(params.SaltLen)
 	if err != nil {
 		return "", err
 	}
@@ -84,11 +89,11 @@ func parseHashed(hashed string) (key, salt []byte, params Params, err error) {
 		}
 
 		switch kv[0] {
-		case "n":
+		case "n", "N":
 			params.N = val
-		case "r":
+		case "r", "R":
 			params.R = val
-		case "p":
+		case "p", "P":
 			params.P = val
 		}
 	}
