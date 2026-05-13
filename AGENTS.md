@@ -8,8 +8,8 @@ go-scrypt 是一个轻量级的 scrypt 密码哈希和校验库，基于 golang.
 
 ### scrypt.go
 
-- `Params` 结构体：定义 scrypt 参数 (N, R, P, KeyLen)
-- `DefaultParams`：默认参数 (N=16384, R=8, P=1, KeyLen=32)
+- `Params` 结构体：定义 scrypt 参数 (N, R, P, SaltLen, KeyLen)
+- `DefaultParams`：默认参数 (N=16384, R=8, P=1, SaltLen=8, KeyLen=32)
 - `Hash(password, params)`：生成密码哈希，自动生成 salt
 - `Verify(password, hashed)`：校验密码是否匹配，使用 constant-time 比较防止时序攻击
 - `parseHashed()`：内部函数，解析哈希字符串提取参数和原始数据

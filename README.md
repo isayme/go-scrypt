@@ -38,10 +38,11 @@ if !ok {
 
 ```go
 params := scrypt.Params{
-    N:      16384,
-    R:      8,
-    P:      1,
-    KeyLen: 32,
+    N:       16384,
+    R:       8,
+    P:       1,
+    SaltLen: 8,
+    KeyLen:  32,
 }
 
 hashed, err := scrypt.Hash("password", params)
